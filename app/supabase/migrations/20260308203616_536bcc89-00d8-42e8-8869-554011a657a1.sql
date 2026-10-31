@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN IF NOT EXISTS quote_parts_name text DEFAULT '';

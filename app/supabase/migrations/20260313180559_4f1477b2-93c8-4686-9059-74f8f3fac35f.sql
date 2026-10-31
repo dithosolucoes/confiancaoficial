@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ALTER COLUMN quote_travel SET DEFAULT 25;

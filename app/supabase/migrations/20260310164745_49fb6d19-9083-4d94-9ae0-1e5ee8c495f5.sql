@@ -1,0 +1,2 @@
+ALTER TABLE public.service_requests DROP CONSTRAINT service_requests_status_check;
+ALTER TABLE public.service_requests ADD CONSTRAINT service_requests_status_check CHECK (status = ANY (ARRAY['pending'::text, 'accepted'::text, 'in_progress'::text, 'budgeting'::text, 'quote_sent'::text, 'quote_accepted'::text, 'quote_rejected'::text, 'payment_pending'::text, 'completed'::text, 'cancelled'::text]));

@@ -1,0 +1,1 @@
+ALTER TABLE public.service_materials ADD COLUMN supplier_cost numeric DEFAULT 0;

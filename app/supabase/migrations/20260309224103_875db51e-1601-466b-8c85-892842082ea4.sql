@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN is_invoiced boolean NOT NULL DEFAULT false;

@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN IF NOT EXISTS tech_payment_vat_rate numeric NOT NULL DEFAULT 6;

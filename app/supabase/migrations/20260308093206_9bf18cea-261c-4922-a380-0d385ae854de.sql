@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN estimated_arrival_time text DEFAULT '';

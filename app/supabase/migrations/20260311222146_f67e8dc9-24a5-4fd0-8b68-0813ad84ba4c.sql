@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN IF NOT EXISTS address_complement text DEFAULT '';

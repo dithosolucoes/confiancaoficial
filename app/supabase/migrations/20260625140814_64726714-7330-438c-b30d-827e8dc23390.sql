@@ -1,0 +1,2 @@
+ALTER TABLE public.cash_flow_entries ADD COLUMN IF NOT EXISTS source_service_id uuid REFERENCES public.service_requests(id) ON DELETE SET NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS cash_flow_entries_source_service_id_key ON public.cash_flow_entries(source_service_id) WHERE source_service_id IS NOT NULL;

@@ -1,0 +1,1 @@
+ALTER TYPE public.payable_category ADD VALUE IF NOT EXISTS 'portagem';

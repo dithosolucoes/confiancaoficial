@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN received_at timestamp with time zone DEFAULT NULL;

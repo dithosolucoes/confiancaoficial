@@ -1,0 +1,1 @@
+CREATE POLICY "Partner members can view photos" ON public.service_photos FOR SELECT TO authenticated USING (EXISTS (SELECT 1 FROM public.service_requests sr WHERE sr.id = service_photos.service_request_id AND sr.customer_id IN (SELECT public.get_partner_user_ids(auth.uid()))));

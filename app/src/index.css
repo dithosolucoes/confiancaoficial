@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand: Navy #0D1B2A + Gold #C79A3B */
+    --background: 40 25% 97%;
+    --foreground: 212 56% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 212 56% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 212 56% 11%;
+
+    --primary: 212 56% 11%;
+    --primary-foreground: 40 30% 96%;
+
+    --secondary: 40 54% 51%;
+    --secondary-foreground: 212 56% 11%;
+
+    --muted: 40 15% 92%;
+    --muted-foreground: 212 20% 35%;
+
+    --accent: 40 50% 88%;
+    --accent-foreground: 212 56% 11%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 212 20% 85%;
+    --input: 212 20% 88%;
+    --ring: 40 54% 51%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 212 56% 11%;
+    --sidebar-foreground: 40 30% 96%;
+    --sidebar-primary: 40 54% 51%;
+    --sidebar-primary-foreground: 212 56% 11%;
+    --sidebar-accent: 212 40% 18%;
+    --sidebar-accent-foreground: 40 30% 96%;
+    --sidebar-border: 212 40% 18%;
+    --sidebar-ring: 40 54% 51%;
+
+    --success: 142 60% 38%;
+    --success-foreground: 0 0% 100%;
+    --warning: 40 80% 48%;
+    --warning-foreground: 212 56% 11%;
+  }
+
+  .dark {
+    --background: 212 56% 8%;
+    --foreground: 40 30% 95%;
+    --card: 212 50% 12%;
+    --card-foreground: 40 30% 95%;
+    --popover: 212 50% 12%;
+    --popover-foreground: 40 30% 95%;
+    --primary: 40 54% 51%;
+    --primary-foreground: 212 56% 11%;
+    --secondary: 40 54% 51%;
+    --secondary-foreground: 212 56% 11%;
+    --muted: 212 30% 18%;
+    --muted-foreground: 40 15% 70%;
+    --accent: 212 40% 20%;
+    --accent-foreground: 40 54% 60%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 40 30% 95%;
+    --border: 212 30% 20%;
+    --input: 212 30% 20%;
+    --ring: 40 54% 51%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* Calendar status dots */
+.calendar-dot-blue,
+.calendar-dot-orange,
+.calendar-dot-red,
+.calendar-dot-pending {
+  position: relative;
+}
+
+.calendar-dot-blue::after,
+.calendar-dot-orange::after,
+.calendar-dot-red::after,
+.calendar-dot-pending::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.calendar-dot-blue::after {
+  background-color: hsl(var(--primary));
+}
+
+.calendar-dot-orange::after {
+  background-color: hsl(var(--warning));
+}
+
+.calendar-dot-red::after {
+  background-color: hsl(var(--destructive));
+}
+
+.calendar-dot-pending::after {
+  background-color: hsl(var(--secondary));
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.5; transform: translateX(-50%) scale(1.4); }
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary .lucide-chevron-down {
+  transform: rotate(180deg);
+}
+
+@keyframes pulse-soft {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--secondary) / 0.6); }
+  50% { box-shadow: 0 0 0 10px hsl(var(--secondary) / 0); }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}

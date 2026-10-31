@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN gestor_notes text DEFAULT '';

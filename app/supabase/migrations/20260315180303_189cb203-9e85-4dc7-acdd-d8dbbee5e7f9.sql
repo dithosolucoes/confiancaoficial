@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN equipment_photo_url text DEFAULT NULL;

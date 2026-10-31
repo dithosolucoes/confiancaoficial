@@ -1,0 +1,1 @@
+ALTER TABLE public.service_materials ADD COLUMN invoice_photo_url text DEFAULT NULL;

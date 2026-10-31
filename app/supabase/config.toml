@@ -1,0 +1,23 @@
+project_id = "hieqrppshcexgqidauvg"
+
+[functions.send-notification]
+verify_jwt = false
+
+[functions.send-welcome-email]
+verify_jwt = false
+
+[functions.create-payment]
+verify_jwt = false
+
+[functions.stripe-payment-link-webhook]
+verify_jwt = false
+
+[inbucket]
+enabled = true
+port = 54424
+
+[analytics]
+enabled = false
+
+[auth]
+additional_redirect_urls = ["http://127.0.0.1:3000/**", "http://localhost:3000/**"]

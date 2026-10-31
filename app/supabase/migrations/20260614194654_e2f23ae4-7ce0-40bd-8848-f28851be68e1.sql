@@ -1,0 +1,1 @@
+UPDATE public.service_requests SET status = 'in_progress', labor_rejected_at = COALESCE(labor_rejected_at, now()), labor_approved_at = NULL, labor_paid_at = NULL WHERE reference = 'CO718797';

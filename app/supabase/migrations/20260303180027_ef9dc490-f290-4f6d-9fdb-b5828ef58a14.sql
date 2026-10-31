@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN reference text NOT NULL DEFAULT '';

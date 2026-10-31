@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests RENAME COLUMN zone TO localidade;
