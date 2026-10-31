@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Building2, Plus, Users, Euro, Phone, Mail, MapPin, CheckCircle2, ShieldCheck, FileText } from "lucide-react";
+import { Building2, Plus, Users, Euro, Phone, Mail, MapPin, CheckCircle2, ShieldCheck, FileText, KeyRound } from "lucide-react";
 import { toast } from "sonner";
 
 import { useCompanies, CompanyRecord } from "@/hooks/useCompanies";
@@ -28,6 +28,10 @@ export const AdminCompaniesPage: React.FC = () => {
   const [showReportModal, setShowReportModal] = useState(false);
   const [allServices, setAllServices] = useState<any[]>([]);
   const [allProfiles, setAllProfiles] = useState<any[]>([]);
+  const [accessCompany, setAccessCompany] = useState<CompanyRecord | null>(null);
+  const [accessName, setAccessName] = useState("");
+  const [accessEmail, setAccessEmail] = useState("");
+  const [isCreatingAccess, setIsCreatingAccess] = useState(false);
 
   React.useEffect(() => {
     const fetchCompanyStats = async () => {
@@ -107,6 +111,45 @@ export const AdminCompaniesPage: React.FC = () => {
       setAddress("");
     } catch (err: any) {
       toast.error("Erro ao credenciar empresa: " + err.message);
+    }
+  };
+
+  const handleCreateAccess = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!accessCompany) return;
+    setIsCreatingAccess(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-company-admin", {
+        body: {
+          company_id: accessCompany.id,
+          full_name: accessName.trim(),
+          email: accessEmail.trim(),
+          redirect_to: `${window.location.origin}/reset-password?invite=1`,
+        },
+      });
+
+      let serverError = (data as { error?: string } | null)?.error;
+      if (!serverError && error) {
+        try {
+          const ctx = (error as { context?: Response }).context;
+          if (ctx && typeof ctx.json === "function") {
+            serverError = (await ctx.json())?.error;
+          }
+        } catch {
+          // ignora: cai na mensagem genérica abaixo
+        }
+        serverError = serverError || error.message;
+      }
+      if (serverError) throw new Error(serverError);
+
+      toast.success(`Convite enviado para ${accessEmail.trim()}. A empresa define a senha pelo e-mail.`);
+      setAccessCompany(null);
+      setAccessName("");
+      setAccessEmail("");
+    } catch (err: any) {
+      toast.error("Não foi possível criar o acesso: " + err.message);
+    } finally {
+      setIsCreatingAccess(false);
     }
   };
 
@@ -246,6 +289,19 @@ export const AdminCompaniesPage: React.FC = () => {
                         {srvsCount} {srvsCount === 1 ? "ordem recebida" : "ordens recebidas"}
                       </span>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-xs h-7 gap-1"
+                        onClick={() => {
+                          setAccessCompany(company);
+                          setAccessName("");
+                          setAccessEmail(company.email || "");
+                        }}
+                      >
+                        <KeyRound className="w-3.5 h-3.5" /> Criar acesso
+                      </Button>
                     <Button
                       size="sm"
                       variant={company.is_approved ? "outline" : "default"}
@@ -254,6 +310,7 @@ export const AdminCompaniesPage: React.FC = () => {
                     >
                       {company.is_approved ? "Suspender" : "Aprovar"}
                     </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -343,6 +400,47 @@ export const AdminCompaniesPage: React.FC = () => {
               </Button>
               <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
                 Salvar e Credenciar
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal para criar o login da empresa parceira */}
+      <Dialog open={!!accessCompany} onOpenChange={(open) => !open && setAccessCompany(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Criar acesso da empresa</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleCreateAccess} className="space-y-4 pt-2">
+            <p className="text-xs text-slate-500">
+              Empresa: <strong>{accessCompany?.name}</strong>. A pessoa responsável recebe um e-mail de convite e define a própria senha.
+            </p>
+            <div className="space-y-1.5">
+              <Label htmlFor="a-name">Nome do responsável *</Label>
+              <Input
+                id="a-name"
+                value={accessName}
+                onChange={(e) => setAccessName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="a-email">E-mail de login *</Label>
+              <Input
+                id="a-email"
+                type="email"
+                value={accessEmail}
+                onChange={(e) => setAccessEmail(e.target.value)}
+                required
+              />
+            </div>
+            <DialogFooter className="pt-2">
+              <Button type="button" variant="outline" onClick={() => setAccessCompany(null)}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={isCreatingAccess} className="bg-blue-600 hover:bg-blue-700 text-white">
+                {isCreatingAccess ? "Enviando..." : "Enviar convite"}
               </Button>
             </DialogFooter>
           </form>
